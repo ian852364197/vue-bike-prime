@@ -13,7 +13,7 @@ axiosapi.interceptors.response.use(
   },
   (error) => {
     Swal.fire({
-      text: `預期外的錯誤: ${error.message}`,
+      text: `錯誤: ${error.message}`,
       icon: 'error',
       allowOutsideClick: false,
       confirmButtonText: '確認'
