@@ -4,10 +4,12 @@
     tableStyle="min-width: 50rem"
     paginator
     :rows="5"
-    :rowsPerPageOptions="[5, 10, 20]"
+    :rowsPerPageOptions="[5, 10, 20, 50]"
     v-model:filters="filters"
     filterDisplay="row"
     :globalFilterFields="['sna', 'sarea', 'ar']"
+    scrollable
+    scrollHeight="85vh"
   >
     <IconField>
       <InputIcon class="pi pi-search" />
@@ -64,8 +66,8 @@ onMounted(async () => {
     allowOutsideClick: false
   });
   const response = await axiosapi.get();
-  Swal.close();
   bikeList.value = [...response.data];
+  Swal.close();
 });
 </script>
 
