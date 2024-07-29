@@ -1,14 +1,17 @@
 <template>
   <DataTable
-    :value="filterList"
+    :value="bikeList"
     tableStyle="min-width: 50rem"
     paginator
     :rows="5"
     :rowsPerPageOptions="[5, 10, 20]"
+    v-model:filters="filters"
+    filterDisplay="row"
+    :globalFilterFields="['sna', 'sarea', 'ar']"
   >
     <IconField>
       <InputIcon class="pi pi-search" />
-      <InputText v-model="keyword" placeholder="Search" />
+      <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
     </IconField>
 
     <Column
@@ -23,25 +26,18 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import axiosapi from '../../plugins/axiosapi';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import { FilterMatchMode } from '@primevue/core/api';
 import Swal from 'sweetalert2';
 
 const bikeList = ref([]);
-const keyword = ref('');
-const filterList = computed(() =>
-  bikeList.value.filter(
-    (station) =>
-      station.ar.includes(keyword.value) ||
-      station.sna.includes(keyword.value) ||
-      station.sarea.includes(keyword.value)
-  )
-);
+
 const columns = ref([
   { field: 'sno', header: '站點編號', sortable: true },
   { field: 'sna', header: '站點名稱', sortable: false },
@@ -53,6 +49,13 @@ const columns = ref([
   { field: 'longitude', header: '站點經度', sortable: false },
   { field: 'available_return_bikes', header: '可歸還的腳踏車數量', sortable: true }
 ]);
+
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  sna: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  sarea: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  ar: { value: null, matchMode: FilterMatchMode.CONTAINS }
+});
 
 onMounted(async () => {
   Swal.fire({
