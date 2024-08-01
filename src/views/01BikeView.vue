@@ -11,11 +11,12 @@
     scrollable
     scrollHeight="85vh"
   >
-    <IconField>
-      <InputIcon class="pi pi-search" />
-      <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
-    </IconField>
-
+    <div class="flex justify-content-end">
+      <IconField>
+        <InputIcon class="pi pi-search" />
+        <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+      </IconField>
+    </div>
     <Column
       v-for="col of columns"
       :key="col.field"
